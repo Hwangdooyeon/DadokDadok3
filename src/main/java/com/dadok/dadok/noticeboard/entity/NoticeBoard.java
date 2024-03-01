@@ -7,7 +7,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import java.util.Date;
 
 @Entity
-@Table(name="noticeboard",
+@Table(name="notice",
         uniqueConstraints = {@UniqueConstraint(
                 name = "unique",
                 columnNames = {"notc_id","notice_uuid"} )
@@ -18,20 +18,22 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class NoticeBoard {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    private int notc_id; // 글번호
+//    @Column(nullable = false, unique = true)
+//
+////    private int notc_id; // 글번호
     private int notc_views; // 조회수
     private String notc_title; // 글제목
     private String notc_content; // 글내용
-    private Date notc_updatedAt = new Date();
 
-    private Date notc_createdAt = new Date();
+    private Date notcUpdatedAt = new Date();
+    private Date notcCreatedAt = new Date();
 
     @Column(unique = true)
     private String notice_uuid; // 첨부파일uuid

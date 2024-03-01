@@ -26,7 +26,7 @@ public class NoticeBoardController {
 
     @GetMapping("/list")
     public String list(Model model) {
-        List<NoticeBoard> noticeFiveList = noticeBoardRepository.findTop5ByNotcCreatedAtDesc();
+        List<NoticeBoard> noticeFiveList = noticeBoardRepository.findAll();
         model.addAttribute("noticefive", noticeFiveList);
         return "index";
     }

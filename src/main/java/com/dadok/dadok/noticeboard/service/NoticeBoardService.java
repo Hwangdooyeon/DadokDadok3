@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface NoticeBoardService  {
     List<NoticeBoard> findFiveNoticeBoard();
+
+
 }
 
 
