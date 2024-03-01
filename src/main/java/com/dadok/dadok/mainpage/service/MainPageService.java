@@ -1,6 +1,7 @@
 package com.dadok.dadok.mainpage.service;
 
 import com.dadok.dadok.freeboard.entity.FreeBoard;
+import com.dadok.dadok.reviewboard.entity.ReviewBoard;
 
 import java.util.List;
 
@@ -8,6 +9,9 @@ public interface MainPageService {
     List<FreeBoard> findFreeBoardList();
     FreeBoard getFreeBoard();
     void join(FreeBoard freeBoard);
+
+    List<ReviewBoard> findReviewBoardList();
+    
 }
 
 //tob bar 주석처리

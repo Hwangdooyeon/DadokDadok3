@@ -35,8 +35,4 @@ public class FreeBoard {
     private int free_board_no;
     private String nickname;
 
-//    @ElementCollection
-//    @CollectionTable(name = "attach", joinColumns = @JoinColumn(name = "board_id"))
-//    private List<FreeBoardAttachVO> attachList;
-
 }
