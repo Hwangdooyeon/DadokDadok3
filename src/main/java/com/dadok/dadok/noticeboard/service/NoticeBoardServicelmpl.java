@@ -25,4 +25,18 @@ public class NoticeBoardServicelmpl implements NoticeBoardService {
     public void deleteNotice(Long id) {
         noticeBoardRepository.deleteById(id);
     }
+    @Transactional
+    public NoticeBoard insertNotice(NoticeBoard noticeBoard) {
+        return noticeBoardRepository.save(noticeBoard);
+    }
+    @Transactional
+    public NoticeBoard updateNotice(Long id, NoticeBoard noticeBoardDetails) {
+        NoticeBoard noticeBoard = noticeBoardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다. id=" + id));
+
+        // 필요한 필드를 여기서 업데이트. 예를 들어, title 필드를 업데이트 한다면
+         noticeBoard.setNotc_title(noticeBoardDetails.getNotc_title());
+         noticeBoard.setNotc_content(noticeBoardDetails.getNotc_content());
+        return noticeBoardRepository.save(noticeBoard);
+    }
 }

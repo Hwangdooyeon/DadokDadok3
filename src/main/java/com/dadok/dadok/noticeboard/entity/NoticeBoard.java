@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name="notice",
@@ -32,8 +32,11 @@ public class NoticeBoard {
     private String notc_title; // 글제목
     private String notc_content; // 글내용
 
-    private Date notcUpdatedAt = new Date();
-    private Date notcCreatedAt = new Date();
+    @Column(columnDefinition = "TIMESTAMP")
+    private LocalDateTime notcUpdatedAt = LocalDateTime.now(); // 수정된 부분
+    @Column(columnDefinition = "TIMESTAMP")
+    private LocalDateTime notcCreatedAt = LocalDateTime.now(); // 수정된 부분
+
 
     @Column(unique = true)
     private String notice_uuid; // 첨부파일uuid
