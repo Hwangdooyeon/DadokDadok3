@@ -8,7 +8,9 @@ import java.util.List;
 
 public interface NoticeBoardService  {
     List<NoticeBoard> findFiveNoticeBoard();
-
+    
+    //검색 기능
+    List<NoticeBoard> searchNoticeBoardsByTitle(String keyword);
 
 }
 

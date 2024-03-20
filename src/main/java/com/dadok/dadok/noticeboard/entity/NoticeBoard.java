@@ -43,5 +43,6 @@ public class NoticeBoard {
     private String notice_file_name; // 첨부파일명
     private boolean pinned; // 고정글여부
 
+    private String title;
 }
 

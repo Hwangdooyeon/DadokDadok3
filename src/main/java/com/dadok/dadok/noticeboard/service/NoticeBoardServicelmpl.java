@@ -39,4 +39,9 @@ public class NoticeBoardServicelmpl implements NoticeBoardService {
          noticeBoard.setNotc_content(noticeBoardDetails.getNotc_content());
         return noticeBoardRepository.save(noticeBoard);
     }
+    @Override
+    public List<NoticeBoard> searchNoticeBoardsByTitle(String keyword) {
+        return noticeBoardRepository.findByTitleContaining(keyword);
+    }
+
 }

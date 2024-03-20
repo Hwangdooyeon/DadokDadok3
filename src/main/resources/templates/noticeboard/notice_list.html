@@ -76,6 +76,7 @@
             text-align: center;
         }
         </style>
+
 </head>
 <body>
 <!--&lt;!&ndash; ======= Top Bar ======= &ndash;&gt;-->
@@ -119,7 +120,11 @@
                 </select>
                 <input type="text" id="keyword" name="keyword" placeholder="검색어 입력">
                 <input type="submit" value="검색" class="btn btn-secondary">
-                <a href="noticeboard" class="btn btn-secondary">목록으로</a>
+<!--                <input type="button" value="검색11" class="btn btn-secondary" onclick="notice_search('keyword');">-->
+                <input type="text" id="searchKeyword" placeholder="검색어를 입력하세요">
+                <input type="button" value="검색" class="btn btn-secondary" onclick="notice_search('keyword');">
+
+                <a href="index" class="btn btn-secondary">목록으로</a>
                 <th:if test="${pageContext.request.isUserInRole('ROLE_ADMIN')}">
                     <a href="notice_write" class="btn btn-secondary">새 글 쓰기</a>
                 </th:if>
@@ -193,4 +198,24 @@
 <!--&lt;!&ndash; End Footer &ndash;&gt;-->
 </div>
 </body>
+<script type="text/javascript">
+
+function notice_search(keyword) {
+      $.ajax({
+            type: 'POST',
+            url: '/noticeboard/list',
+            dataType: 'json',
+            data: JSON.stringify({ keyword: keyword }),
+            contentType : 'application/json',
+            success: function(data) {
+                console.log(data);
+            },
+           error: function(xhr, ajaxSettings, thrownError) {
+            alert("요청 처리 중 문제가 발생했습니다. 다시 시도해 주세요.");
+            }
+        });
+
+}
+
+</script>
 </html>

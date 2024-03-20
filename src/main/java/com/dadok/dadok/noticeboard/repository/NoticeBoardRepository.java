@@ -22,8 +22,8 @@ public interface NoticeBoardRepository extends JpaRepository<NoticeBoard, Long> 
 
     List<NoticeBoard> findTop5ByOrderByNotcCreatedAtDesc();
 
-
-
+    // 검색 기능
+    List<NoticeBoard> findByTitleContaining(String keyword);
 
 }
 

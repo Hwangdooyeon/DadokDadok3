@@ -4,10 +4,11 @@ import com.dadok.dadok.noticeboard.entity.NoticeBoard;
 import com.dadok.dadok.noticeboard.repository.NoticeBoardRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,12 +24,41 @@ public class NoticeBoardController {
     @GetMapping("/list")
     public String list(Model model) {
         List<NoticeBoard> noticeFiveList = noticeBoardRepository.findAll();
+
         model.addAttribute("noticefive", noticeFiveList);
-        System.out.println("------------------------------");
+
+
         System.out.println("noticeFiveList" + noticeFiveList);
-        System.out.println("------------------------------");
+
+
         return "noticeboard/notice_list";
     }
+
+    @ResponseBody //데이터 그 자체를 return함 //단골질문!
+    @PostMapping(value = "/list")
+    public ResponseEntity<List<NoticeBoard>> noticeSearch(@RequestParam(required = false) String keyword) throws Exception {
+        List<NoticeBoard> noticeBoards;
+        if (keyword != null && !keyword.isEmpty()) {
+            // 키워드를 포함하는 공지사항 검색
+            noticeBoards = noticeBoardRepository.findByTitleContaining(keyword);
+            System.out.println("----------------------------");
+        } else {
+            // 키워드가 제공되지 않았을 경우, 최근 공지사항 5개 반환
+            noticeBoards = noticeBoardRepository.findTop5ByOrderByNotcCreatedAtDesc();
+            System.out.println("333333333333333333333333333");
+        }
+        System.out.println("keyword"+ keyword);
+        return new ResponseEntity<>(noticeBoards, HttpStatus.OK);
+    }
+
+
+//    @ResponseBody //데이터 그 자체를 return함 //단골질문!
+//    @PostMapping(value = "/list")// url이 숨겨저서 나옴
+//    public ResponseEntity<List<NoticeBoard>> noticeSearch(String keyword) throws Exception {
+//        return new ResponseEntity<>(noticeBoardRepository.findTop5ByOrderByNotcCreatedAtDesc(), HttpStatus.OK);
+//    }
+
+
     //게시글 작성
     @RequestMapping(value = "/notice_write")
     public String writeNotice() throws Exception {
@@ -43,6 +73,7 @@ public class NoticeBoardController {
 //        model.addAttribute("searchResults", searchResults); // 모델에 searchResults를 추가합니다.
 //        return "noticeboard/notice_list"; // Thymeleaf 템플릿의 이름을 반환합니다. 예를 들어, "noticeboard.html"
 //    }
+
 }
 
 
