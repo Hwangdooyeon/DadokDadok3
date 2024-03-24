@@ -5,7 +5,6 @@ import com.dadok.dadok.noticeboard.repository.NoticeBoardRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,7 +43,7 @@ class DadokApplicationTests {
 	void 공지게시판insert테스트() {
 		System.out.println("------------------");
 		NoticeBoard notice = new NoticeBoard();
-		notice.setNotc_title("공지공지");
+		notice.setNotcTitle("공지공지");
 		notice.setNotc_content("중요한내용");
 
 

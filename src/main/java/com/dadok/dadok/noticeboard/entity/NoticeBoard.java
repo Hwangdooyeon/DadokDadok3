@@ -29,7 +29,8 @@ public class NoticeBoard {
 //
 ////    private int notc_id; // 글번호
     private int notc_views; // 조회수
-    private String notc_title; // 글제목
+    @Column(name = "notc_title")
+    private String notcTitle; // 글제목
     private String notc_content; // 글내용
 
     @Column(columnDefinition = "TIMESTAMP")

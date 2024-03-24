@@ -120,15 +120,16 @@
                 </select>
                 <input type="text" id="keyword" name="keyword" placeholder="검색어 입력">
                 <input type="submit" value="검색" class="btn btn-secondary">
-<!--                <input type="button" value="검색11" class="btn btn-secondary" onclick="notice_search('keyword');">-->
+<!--                    <input type="button" value="검색11" class="btn btn-secondary" onclick="notice_search('keyword');">-->
                 <input type="text" id="searchKeyword" placeholder="검색어를 입력하세요">
-                <input type="button" value="검색" class="btn btn-secondary" onclick="notice_search('keyword');">
-
+                <input type="button" value="검색" class="btn btn-secondary" onclick="notice_search();">
+                <div id="searchResults"></div>
                 <a href="index" class="btn btn-secondary">목록으로</a>
                 <th:if test="${pageContext.request.isUserInRole('ROLE_ADMIN')}">
                     <a href="notice_write" class="btn btn-secondary">새 글 쓰기</a>
                 </th:if>
             </div>
+
         </form>
         <br><br>
         <div class="row">
@@ -149,7 +150,7 @@
                         <td th:text="${result.id}"></td>
                         <td>
                             <a th:href="@{/noticeboard_one(id=${result.id})}">
-                                <span th:text="${#strings.length(result.notc_title) > 20 ? #strings.substring(result.notc_title, 0, 20) + '...' : result.notc_title}"></span>
+                                <span th:text="${#strings.length(result.notcTitle) > 20 ? #strings.substring(result.notcTitle, 0, 20) + '...' : result.notcTitle}"></span>
                             </a>
                         </td>
                         <td th:text="${#strings.length(result.notc_content) > 20 ? #strings.substring(result.notc_content, 0, 20) + '...' : result.notc_content}"></td>
@@ -200,21 +201,42 @@
 </body>
 <script type="text/javascript">
 
-function notice_search(keyword) {
-      $.ajax({
-            type: 'POST',
-            url: '/noticeboard/list',
-            dataType: 'json',
-            data: JSON.stringify({ keyword: keyword }),
-            contentType : 'application/json',
-            success: function(data) {
-                console.log(data);
-            },
-           error: function(xhr, ajaxSettings, thrownError) {
-            alert("요청 처리 중 문제가 발생했습니다. 다시 시도해 주세요.");
-            }
-        });
+function notice_search() {
+    const keyword = $("#searchKeyword").val();
 
+    $.ajax({
+        type: 'POST',
+        url: '/noticeboard/list',
+        dataType: 'text',
+        data: keyword,
+        contentType : 'text/plain',
+        success: function(data) {
+           result(data);
+        },
+       error: function(xhr, ajaxSettings, thrownError) {
+        alert("요청 처리 중 문제가 발생했습니다. 다시 시도해 주세요.");
+        }
+    });
+}
+function result(data) {
+    // JSON 형태의 문자열을 자바스크립트 객체로 변환
+    var results = JSON.parse(data);
+    var $list = $('<table>').addClass('table');
+    $list.append('<thead><tr><th>NO</th><th>제목</th><th>내용</th><th>조회수</th><th>작성일</th></tr></thead>');
+    var $tbody = $('<tbody>').appendTo($list);
+
+    $.each(results, function(index, item) {
+        var $row = $('<tr>')
+            .append($('<td>').text(item.id))
+            .append($('<td>').text(item.notcTitle))
+            .append($('<td>').text(item.notc_content))
+            .append($('<td>').text(item.notc_views))
+            .append($('<td>').text(item.notcCreatedAt));
+        $tbody.append($row);
+    });
+
+    // #searchResults 요소에 생성된 테이블 삽입
+    $('#searchResults').empty().append($list);
 }
 
 </script>

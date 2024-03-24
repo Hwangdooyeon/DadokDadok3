@@ -21,7 +21,7 @@ public class NoticeBoardController {
     private final NoticeBoardRepository noticeBoardRepository;
 
     // index.html에 5개의 공지사항 가지고 오기
-    @GetMapping("/list")
+    @GetMapping("/notice_list")
     public String list(Model model) {
         List<NoticeBoard> noticeFiveList = noticeBoardRepository.findAll();
 
@@ -36,18 +36,18 @@ public class NoticeBoardController {
 
     @ResponseBody //데이터 그 자체를 return함 //단골질문!
     @PostMapping(value = "/list")
-    public ResponseEntity<List<NoticeBoard>> noticeSearch(@RequestParam(required = false) String keyword) throws Exception {
+    public ResponseEntity<List<NoticeBoard>> noticeSearch(@RequestBody String keyword) throws Exception {
         List<NoticeBoard> noticeBoards;
         if (keyword != null && !keyword.isEmpty()) {
             // 키워드를 포함하는 공지사항 검색
-            noticeBoards = noticeBoardRepository.findByTitleContaining(keyword);
+            noticeBoards = noticeBoardRepository.findByNotcTitleContaining(keyword);
             System.out.println("----------------------------");
         } else {
             // 키워드가 제공되지 않았을 경우, 최근 공지사항 5개 반환
             noticeBoards = noticeBoardRepository.findTop5ByOrderByNotcCreatedAtDesc();
             System.out.println("333333333333333333333333333");
         }
-        System.out.println("keyword"+ keyword);
+        System.out.println("keyword: "+ keyword);
         return new ResponseEntity<>(noticeBoards, HttpStatus.OK);
     }
 

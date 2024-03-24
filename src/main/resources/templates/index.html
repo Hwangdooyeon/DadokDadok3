@@ -296,7 +296,7 @@
                     <div th:each = "item : ${noticefive}">
 
             <--           공지사항 제목에 링크 적용. 링크는 각 공지사항의 ID를 포함합니다. -->
-                        <p><a href="/noticeboard/noticeboard_one?notc_id=${item.notc_id}">${item.notc_title}</a>
+                        <p><a href="/noticeboard/noticeboard_one?notc_id=${item.notc_id}">${item.notcTitle}</a>
                         </p>
                     <!--                            <p><fmt:formatDate value="${notice.notc_createdAt}" pattern="yyyy-MM-dd"/></p>-->
 
