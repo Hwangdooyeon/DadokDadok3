@@ -1,6 +1,8 @@
 package com.dadok.dadok.noticeboard.repository;
 
 import com.dadok.dadok.noticeboard.entity.NoticeBoard;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -23,8 +25,12 @@ public interface NoticeBoardRepository extends JpaRepository<NoticeBoard, Long> 
     List<NoticeBoard> findTop5ByOrderByNotcCreatedAtDesc();
 
     // 검색 기능
-    List<NoticeBoard> findByNotcTitleContaining(String keyword);
+//    List<NoticeBoard> findByNotcTitleContaining(String keyword);
 
+    Page<NoticeBoard> findByNotcTitleContaining(String keyword, Pageable pageable);
 
+//    Page<NoticeBoard> findByNotcContentContaining(String content, Pageable pageable);
+//
+//    Page<NoticeBoard> findByNotcTitleContainingOrNotcContentContaining(String keyword, String contentKeyword, Pageable pageable);
 }
 

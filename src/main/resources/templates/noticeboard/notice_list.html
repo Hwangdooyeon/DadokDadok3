@@ -118,12 +118,8 @@
                     <option value="content">내용</option>
                     <option value="titleContent">제목+내용</option>
                 </select>
-                <input type="text" id="keyword" name="keyword" placeholder="검색어 입력">
-                <input type="submit" value="검색" class="btn btn-secondary">
-<!--                    <input type="button" value="검색11" class="btn btn-secondary" onclick="notice_search('keyword');">-->
                 <input type="text" id="searchKeyword" placeholder="검색어를 입력하세요">
                 <input type="button" value="검색" class="btn btn-secondary" onclick="notice_search();">
-                <div id="searchResults"></div>
                 <a href="index" class="btn btn-secondary">목록으로</a>
                 <th:if test="${pageContext.request.isUserInRole('ROLE_ADMIN')}">
                     <a href="notice_write" class="btn btn-secondary">새 글 쓰기</a>
@@ -133,7 +129,7 @@
         </form>
         <br><br>
         <div class="row">
-            <div class="col">
+            <div class="col" id="searchResults">
                 <table class="table">
                     <thead>
                     <tr>
@@ -172,13 +168,11 @@
                             <
                         </a>
                     </li>
-<!--                    <c:forEach begin="1" end="${noticeBoardPageVO.totalPages}" var="pageNumber">-->
-<!--                        <li class="page-item${noticeBoardPageVO.page == pageNumber ? ' active' : ''}">-->
-<!--                            <a class="page-link" href="/noticeboard/noticeboard_search?page=${pageNumber}&pageSize=${noticeBoardPageVO.pageSize}&searchType=${searchType}&keyword=${keyword}">-->
-<!--                                ${pageNumber}-->
-<!--                            </a>-->
-<!--                        </li>-->
-<!--                    </c:forEach>-->
+<!--                    <li th:each="pageNum : ${#numbers.sequence(1, noticeBoardPageVO.totalPages)}"-->
+<!--                        th:classappend="${noticeBoardPageVO.page == pageNum ? ' active' : ''}" class="page-item">-->
+<!--                        <a th:href="@{/noticeboard/noticeboard_search(page=${pageNum}, pageSize=${noticeBoardPageVO.pageSize}, searchType=${searchType}, keyword=${keyword})}"-->
+<!--                           class="page-link" th:text="${pageNum}">1</a>-->
+<!--                    </li>-->
                     <li class="page-item${noticeBoardPageVO.page == noticeBoardPageVO.totalPages ? ' disabled' : ''}">
                         <a class="page-link" href="/noticeboard/noticeboard_search?page=${noticeBoardPageVO.page + 1}&pageSize=${noticeBoardPageVO.pageSize}&searchType=${searchType}&keyword=${keyword}" aria-label="Next">
                             >
@@ -220,18 +214,20 @@ function notice_search() {
 }
 function result(data) {
     // JSON 형태의 문자열을 자바스크립트 객체로 변환
-    var results = JSON.parse(data);
-    var $list = $('<table>').addClass('table');
+    const results = JSON.parse(data);
+    const $list = $('<table>').addClass('table');
     $list.append('<thead><tr><th>NO</th><th>제목</th><th>내용</th><th>조회수</th><th>작성일</th></tr></thead>');
-    var $tbody = $('<tbody>').appendTo($list);
-
+    const $tbody = $('<tbody>').appendTo($list);
+    // 메서드 체인
     $.each(results, function(index, item) {
-        var $row = $('<tr>')
+        const $row = $('<tr>')
             .append($('<td>').text(item.id))
-            .append($('<td>').text(item.notcTitle))
+            .append($('<td>')
+                .append($('<a>').attr("href", '/noticeboard_one/' + item.id)
+                    .append($('<span>').text(item.notcTitle))))
             .append($('<td>').text(item.notc_content))
             .append($('<td>').text(item.notc_views))
-            .append($('<td>').text(item.notcCreatedAt));
+            .append($('<td>').text(item.notcCreatedAt.replace('T', ' ')));
         $tbody.append($row);
     });
 

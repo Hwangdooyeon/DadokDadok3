@@ -4,6 +4,8 @@ import com.dadok.dadok.noticeboard.entity.NoticeBoard;
 import com.dadok.dadok.noticeboard.repository.NoticeBoardRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -34,23 +36,35 @@ public class NoticeBoardController {
         return "noticeboard/notice_list";
     }
 
-    @ResponseBody //데이터 그 자체를 return함 //단골질문!
+//    @ResponseBody //데이터 그 자체를 return함 //단골질문!
+//    @PostMapping(value = "/list")
+//    public ResponseEntity<List<NoticeBoard>> noticeSearch(@RequestBody (required = false) String keyword)  throws Exception {
+//        List<NoticeBoard> noticeBoards;
+//        if (keyword != null && !keyword.isEmpty()) {
+//            // 키워드를 포함하는 공지사항 검색
+//            noticeBoards = noticeBoardRepository.findByNotcTitleContaining(keyword);
+//            System.out.println("----------------------------");
+//        } else {
+//            // 키워드가 제공되지 않았을 경우, 최근 공지사항 5개 반환
+//            noticeBoards = noticeBoardRepository.findTop5ByOrderByNotcCreatedAtDesc();
+//            System.out.println("333333333333333333333333333");
+//        }
+//        System.out.println("keyword: "+ keyword);
+//        return new ResponseEntity<>(noticeBoards, HttpStatus.OK);
+//    }
+    @ResponseBody
     @PostMapping(value = "/list")
-    public ResponseEntity<List<NoticeBoard>> noticeSearch(@RequestBody String keyword) throws Exception {
-        List<NoticeBoard> noticeBoards;
-        if (keyword != null && !keyword.isEmpty()) {
-            // 키워드를 포함하는 공지사항 검색
-            noticeBoards = noticeBoardRepository.findByNotcTitleContaining(keyword);
-            System.out.println("----------------------------");
+    public ResponseEntity<Page<NoticeBoard>> noticeSearch(@RequestBody(required = false) String keyword, Pageable pageable) throws Exception {
+        Page<NoticeBoard> noticeBoards;
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            // 키워드를 포함하는 공지사항 검색 및 페이징 처리
+            noticeBoards = noticeBoardRepository.findByNotcTitleContaining(keyword, pageable);
         } else {
-            // 키워드가 제공되지 않았을 경우, 최근 공지사항 5개 반환
-            noticeBoards = noticeBoardRepository.findTop5ByOrderByNotcCreatedAtDesc();
-            System.out.println("333333333333333333333333333");
+            // 키워드가 제공되지 않았을 경우, 모든 공지사항을 페이징 처리하여 반환
+            noticeBoards = noticeBoardRepository.findAll(pageable);
         }
-        System.out.println("keyword: "+ keyword);
         return new ResponseEntity<>(noticeBoards, HttpStatus.OK);
     }
-
 
 //    @ResponseBody //데이터 그 자체를 return함 //단골질문!
 //    @PostMapping(value = "/list")// url이 숨겨저서 나옴

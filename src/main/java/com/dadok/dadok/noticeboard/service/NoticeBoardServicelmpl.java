@@ -4,6 +4,9 @@ import com.dadok.dadok.noticeboard.entity.NoticeBoard;
 import com.dadok.dadok.noticeboard.repository.NoticeBoardRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,8 +43,24 @@ public class NoticeBoardServicelmpl implements NoticeBoardService {
 //        return noticeBoardRepository.save(noticeBoard);
 //    }
     @Override
-    public List<NoticeBoard> searchNoticeBoardsByTitle(String keyword) {
-        return noticeBoardRepository.findByNotcTitleContaining(keyword);
+    public Page<NoticeBoard> searchNoticeBoardsByTitle(String keyword, Pageable pageable) {
+        return noticeBoardRepository.findByNotcTitleContaining(keyword, pageable);
     }
-
+//    @Override
+//    public Page<NoticeBoard> searchNoticeBoardsByContent(String content, Pageable pageable) {
+//        return noticeBoardRepository.findByNotcContentContaining(content, pageable);
+//    }
+//@Override
+//public Page<NoticeBoard> searchByKeyword(String type, String keyword, Pageable pageable) {
+//    switch (type) {
+//        case "title":
+//            return noticeBoardRepository.findByNotcTitleContaining(keyword, pageable);
+//        case "content":
+//            return noticeBoardRepository.findByNotcContentContaining(keyword, pageable);
+//        case "both":
+//            return noticeBoardRepository.findByNotcTitleContainingOrNotcContentContaining(keyword, keyword, pageable);
+//        default:
+//            return Page.empty(pageable);
+//    }
 }
+
