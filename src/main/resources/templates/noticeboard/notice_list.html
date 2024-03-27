@@ -219,7 +219,7 @@ function result(data) {
     $list.append('<thead><tr><th>NO</th><th>제목</th><th>내용</th><th>조회수</th><th>작성일</th></tr></thead>');
     const $tbody = $('<tbody>').appendTo($list);
     // 메서드 체인
-    $.each(results, function(index, item) {
+    $.each(results.content, function(index, item) {
         const $row = $('<tr>')
             .append($('<td>').text(item.id))
             .append($('<td>')

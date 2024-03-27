@@ -65,7 +65,7 @@ public class NoticeBoardController {
         }
         return new ResponseEntity<>(noticeBoards, HttpStatus.OK);
     }
-
+// 프런트로부터 request를 받고 응답을 해주는
 //    @ResponseBody //데이터 그 자체를 return함 //단골질문!
 //    @PostMapping(value = "/list")// url이 숨겨저서 나옴
 //    public ResponseEntity<List<NoticeBoard>> noticeSearch(String keyword) throws Exception {
